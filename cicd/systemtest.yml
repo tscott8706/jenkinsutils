@@ -8,8 +8,10 @@ services:
         container_name: jenkinsutils_systemtesting
         network_mode: bridge
         volumes:
-            - ..:/jenkinsutils
-        command: bash -c "/jenkinsutils/cicd/systemtest.sh"
+          - ../jenkinsutils:/jenkinsutils/jenkinsutils
+          - ../tests:/jenkinsutils/tests
+          - ../cicd:/jenkinsutils/cicd
+        command: bash -c "ls /jenkinsutils && ls /jenkinsutils/jenkinsutils && /jenkinsutils/cicd/systemtest.sh"
 
     jenkins:
         image: jenkins/jenkins:lts
