@@ -1,0 +1,8 @@
+cicd/jenkins_home/*
+!cicd/jenkins_home/.gitkeep
+cicd/gitlab/config/*
+!cicd/gitlab/config/.gitkeep
+cicd/gitlab/logs/*
+!cicd/gitlab/logs/.gitkeep
+cicd/gitlab/data/*
+!cicd/gitlab/data/.gitkeep
