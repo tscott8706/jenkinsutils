@@ -16,8 +16,8 @@ This setup is not meant for production.  It is only for learning purposes.
   6. Manage Jenkins -> Manage Nodes -> New Node
     1. Build Node, Permanent Agent
     2. Setup:
-       1. # of Executors: 2
-       2. Remote root directory: /rooto
+       1. Number of Executors: 2
+       2. Remote root directory: /root
        3. Labels: Build Node
        4. Launch method: SSH
          1. Host: 192.168.1.2
@@ -34,8 +34,20 @@ This setup is not meant for production.  It is only for learning purposes.
     1. Public access
     2. Located at http://192.168.1.3/root/jenkinsutils
 
+## Usage
+After installing the jenkinsutils package, the following commands are available:
+
+* jenkinsutils [Jenkins URL:port] init
+* jenkinsutils [Jenkins URL:port] plugins download [config file]
+* jenkinsutils [Jenkins URL:port] list
+* jenkinsutils [Jenkins URL:port] create [config file]
+* jenkinsutils [Jenkins URL:port] jobstatus
+
+See jenkinsutils --help for more information about each command.
+
 ## Testing
 Change to the cicd directory.  Then...
+
 * **jenkinsutils installation**
   * docker-compose -f unittest.yml build OR
   * pip install --force -e jenkinsutils from the directory above setup.py
