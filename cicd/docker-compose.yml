@@ -14,7 +14,10 @@ services:
 
     build-node:
         # User/pass: root/root
-        image: rastasheep/ubuntu-sshd:16.04
+        build:
+            context: .
+            dockerfile: ssh-agent-dockerfile
+        image: ubuntu-sshd
         container_name: build-node
         ports:
             - 22:22
@@ -27,9 +30,9 @@ services:
         image: gitlab/gitlab-ce:latest
         container_name: gitlab
         volumes:
-            - ./gitlab/config:/etc/gitlab \
-            - ./gitlab/logs:/var/log/gitlab \
-            - ./gitlab/data:/var/opt/gitlab \
+            - ./gitlab/config:/etc/gitlab
+            - ./gitlab/logs:/var/log/gitlab
+            - ./gitlab/data:/var/opt/gitlab
         ports:
             - 22:22
             - 80:80
