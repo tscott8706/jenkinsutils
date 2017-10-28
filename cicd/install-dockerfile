@@ -1,0 +1,6 @@
+# Needs to be run from the top level package directory... the same level as setup.py
+FROM python:3.6.2-stretch
+
+ADD . /jenkinsutils
+RUN pip install --force -e /jenkinsutils
+RUN pip install nose2

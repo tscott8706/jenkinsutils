@@ -1,0 +1,13 @@
+version: "2"
+services:
+    unittest:
+        build:
+            context: ..
+            dockerfile: cicd/install-dockerfile
+        image: jenkinsutils
+        container_name: jenkinsutils_unittesting
+        network_mode: bridge
+        volumes:
+            - ..:/jenkinsutils
+        command: bash -c "cd /jenkinsutils && nose2"
+        tty: true

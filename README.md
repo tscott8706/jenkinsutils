@@ -33,3 +33,15 @@ This setup is not meant for production.  It is only for learning purposes.
   5. Create a jenkinsutils project
     1. Public access
     2. Located at http://192.168.1.3/root/jenkinsutils
+
+## Testing
+Change to the cicd directory.  Then...
+* **jenkinsutils installation**
+  * docker-compose -f unittest.yml build OR
+  * pip install --force -e jenkinsutils from the directory above setup.py
+* **jenkinsutils unittesting**
+  * docker-compose -f unittest.yml run --rm unittest
+  * From the top directory, run nose2
+* **jenkinsutils system testing**
+  * docker-compose -f systemtest.yml run --rm systemtest
+  * No manual version of this

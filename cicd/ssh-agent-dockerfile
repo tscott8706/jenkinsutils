@@ -1,0 +1,3 @@
+FROM rastasheep/ubuntu-sshd:16.04
+
+RUN apt-get update && apt-get install default-jre -y
