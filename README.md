@@ -37,11 +37,10 @@ This setup is not meant for production.  It is only for learning purposes.
 ## Usage
 After installing the jenkinsutils package, the following commands are available:
 
-* jenkinsutils [Jenkins URL:port] init
-* jenkinsutils [Jenkins URL:port] plugins download [config file]
-* jenkinsutils [Jenkins URL:port] list
-* jenkinsutils [Jenkins URL:port] create [config file]
-* jenkinsutils [Jenkins URL:port] jobstatus
+* jenkinsutils [Jenkins URL:port] plugins-download [config file]
+* jenkinsutils [Jenkins URL:port] plugins-list
+* jenkinsutils [Jenkins URL:port] job-create [config file]
+* jenkinsutils [Jenkins URL:port] job-status
 
 See jenkinsutils --help for more information about each command.
 
