@@ -1,30 +1,40 @@
-version: "2"
+version: "2.1"
 services:
-    systemtest:
-        build:
-            context: ..
-            dockerfile: cicd/install-dockerfile
-        image: jenkinsutils
-        container_name: jenkinsutils_systemtesting
-        network_mode: bridge
-        volumes:
-          - ../jenkinsutils:/jenkinsutils/jenkinsutils
-          - ../tests:/jenkinsutils/tests
-          - ../cicd:/jenkinsutils/cicd
-        command: /jenkinsutils/cicd/systemtest.sh
-
     jenkins:
         image: jenkins/jenkins:lts
-        container_name: jenkins
+        container_name: jenkins_systemtesting
         logging:
             driver: none
         volumes:
             - ./jenkins_home_test:/var/jenkins_home
         ports:
             - 8080:8080
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://192.168.2.1:8080"]
+            interval: 10s
+            timeout: 3s
+            retries: 6
         networks:
             network:
                 ipv4_address: 192.168.2.1
+
+    systemtest:
+        build:
+            context: ..
+            dockerfile: cicd/install-dockerfile
+        image: jenkinsutils
+        container_name: jenkinsutils_systemtesting
+        depends_on:
+            jenkins:
+                condition: service_healthy
+        volumes:
+          - ../jenkinsutils:/jenkinsutils/jenkinsutils
+          - ../tests:/jenkinsutils/tests
+          - ../cicd:/jenkinsutils/cicd
+        command: /jenkinsutils/cicd/systemtest.sh
+        networks:
+            network:
+                ipv4_address: 192.168.2.2
 
 networks:
     network:

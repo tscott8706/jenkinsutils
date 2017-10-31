@@ -25,6 +25,7 @@ This setup is not meant for production.  It is only for learning purposes.
          3. Non verifying Verification Strategy
          4. Save
          5. Make sure the node connects.
+  7. Repeat steps 1-5 for the system test container (docker-compose -f systemtest.yml up)
 4. Setup GitLab
   1. Navigate to 192.168.1.3
   2. Put in a password and change password
@@ -54,5 +55,5 @@ Change to the cicd directory.  Then...
   * docker-compose -f unittest.yml run --rm unittest
   * From the top directory, run nose2
 * **jenkinsutils system testing**
-  * docker-compose -f systemtest.yml run --rm systemtest
+  * docker-compose -f systemtest.yml up --abort-on-container-exit
   * No manual version of this

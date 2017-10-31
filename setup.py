@@ -7,7 +7,7 @@ setup(
     description = "Some utilities for Jenkins using the jenkinsapi library",
     author = "Tim Scott",
     author_email = "tim@developerautomation.com",
-    requirements = ["jenkinsapi"],
+    install_requires = ["jenkinsapi"],
     url = "https://github.com/tscott8706/jenkinsutils",
     packages = [package_name],
     entry_points = {

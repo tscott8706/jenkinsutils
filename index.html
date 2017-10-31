@@ -1,0 +1,83 @@
+<h1>jenkinsutils</h1>
+
+<p>This setup is not meant for production.  It is only for learning purposes.</p>
+
+<h2>Initialization</h2>
+
+<ol>
+<li>Install Docker and docker-compose</li>
+<li>Change to the cicd directory and run docker-compose up -d</li>
+<li>Setup Jenkins
+<ol>
+<li>cat cicd/jenkins_home/secrets/initialAdminPassword</li>
+<li>Navigate to 192.168.1.1 and put in that password</li>
+<li>Install recommended plugins</li>
+<li>Continue as admin (no new user)</li>
+<li>Manage Jenkins -> Configure Global Security</li>
+<li>Disable Enable security</li>
+<li>Disable Prevent Cross Site Request Forgery exploits</li>
+<li>Save</li>
+<li>Manage Jenkins -> Manage Nodes -> New Node</li>
+<li>Build Node, Permanent Agent</li>
+<li>Setup:
+<ol>
+<li>Number of Executors: 2</li>
+<li>Remote root directory: /root</li>
+<li>Labels: Build Node</li>
+<li>Launch method: SSH
+<ol>
+<li>Host: 192.168.1.2</li>
+<li>Add Jenkins credential: root/root (and use it)</li>
+<li>Non verifying Verification Strategy</li>
+<li>Save</li>
+<li>Make sure the node connects.</li>
+</ol></li>
+</ol></li>
+</ol></li>
+<li>Setup GitLab
+<ol>
+<li>Navigate to 192.168.1.3</li>
+<li>Put in a password and change password</li>
+<li>Log in as root and the password you set</li>
+<li>Add an SSH key for root</li>
+<li>Create a jenkinsutils project</li>
+<li>Public access</li>
+<li>Located at http://192.168.1.3/root/jenkinsutils</li>
+</ol></li>
+</ol>
+
+<h2>Usage</h2>
+
+<p>After installing the jenkinsutils package, the following commands are available:</p>
+
+<ul>
+<li>jenkinsutils [Jenkins URL:port] init</li>
+<li>jenkinsutils [Jenkins URL:port] plugins download [config file]</li>
+<li>jenkinsutils [Jenkins URL:port] list</li>
+<li>jenkinsutils [Jenkins URL:port] create [config file]</li>
+<li>jenkinsutils [Jenkins URL:port] jobstatus</li>
+</ul>
+
+<p>See jenkinsutils --help for more information about each command.</p>
+
+<h2>Testing</h2>
+
+<p>Change to the cicd directory.  Then...</p>
+
+<ul>
+<li><strong>jenkinsutils installation</strong>
+<ul>
+<li>docker-compose -f unittest.yml build OR</li>
+<li>pip install --force -e jenkinsutils from the directory above setup.py</li>
+</ul></li>
+<li><strong>jenkinsutils unittesting</strong>
+<ul>
+<li>docker-compose -f unittest.yml run --rm unittest</li>
+<li>From the top directory, run nose2</li>
+</ul></li>
+<li><strong>jenkinsutils system testing</strong>
+<ul>
+<li>docker-compose -f systemtest.yml run --rm systemtest</li>
+<li>No manual version of this</li>
+</ul></li>
+</ul>

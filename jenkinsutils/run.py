@@ -1,4 +1,7 @@
 import argparse
+from jenkinsapi.jenkins import Jenkins
+
+from jenkinsutils.create_jobs import create_jobs
 
 _config_file_cmds = ("plugins-download", "job-create")
 
@@ -25,5 +28,7 @@ def _validate_args(args):
 
 def run():
     args = parse_args()
-    validate_args(args)
-
+    srv = Jenkins(args.server_address)
+    {
+        "job-create": lambda: create_jobs(srv, args.config)
+    }[args.cmd]()
