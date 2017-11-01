@@ -1,61 +1,47 @@
-def create_jobs(srv, config):
-    print("aaa")
-    srv.create_job("myjob", _get_job_config("rrrrrr", "dddd"))
-    print("bbb")
+import jenkinsapi
+import json
 
-def _parse_config(config):
-    pass
+def create_jobs(srv, config_filepath):
+    for job_name, repo_and_jenkinsfile in _parse_config(config_filepath).items():
+        srv.create_job(job_name, _get_job_config(repo_and_jenkinsfile))
 
-def _get_job_config(repo, jenkinsfile):
+def _parse_config(config_filepath):
+    with open(config_filepath, "r") as config_file:
+        return json.load(config_file)
+
+def _get_job_config(repo_and_jenkinsfile):
+    repo, jenkinsfile = repo_and_jenkinsfile
     return """<?xml version='1.0' encoding='UTF-8'?>
-<org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject plugin="workflow-multibranch@2.16">
+<flow-definition plugin="workflow-job@2.15">
   <actions/>
   <description></description>
+  <keepDependencies>false</keepDependencies>
   <properties>
-    <org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig plugin="pipeline-model-definition@1.2.2">
-      <dockerLabel></dockerLabel>
-      <registry plugin="docker-commons@1.9"/>
-    </org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
-  <folderViews class="jenkins.branch.MultiBranchProjectViewHolder" plugin="branch-api@2.0.15">
-    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
-  </folderViews>
-  <healthMetrics>
-    <com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric plugin="cloudbees-folder@6.2.1">
-      <nonRecursive>false</nonRecursive>
-    </com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric>
-  </healthMetrics>
-  <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api@2.0.15">
-    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
-  </icon>
-  <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder@6.2.1">
-    <pruneDeadBranches>true</pruneDeadBranches>
-    <daysToKeep>-1</daysToKeep>
-    <numToKeep>-1</numToKeep>
-  </orphanedItemStrategy>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.41">
+    <scm class="hudson.plugins.git.GitSCM" plugin="git@3.6.3">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs>
+        <hudson.plugins.git.UserRemoteConfig>
+          <url>{repo}</url>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/master</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <submoduleCfg class="list"/>
+      <extensions/>
+    </scm>
+    <scriptPath>{jenkinsfile}</scriptPath>
+    <lightweight>true</lightweight>
+  </definition>
   <triggers/>
   <disabled>false</disabled>
-  <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api@2.0.15">
-    <data>
-      <jenkins.branch.BranchSource>
-        <source class="jenkins.plugins.git.GitSCMSource" plugin="git@3.6.3">
-          <id>628be0f7-eb71-4a71-b14f-6452d5782bb5</id>
-          <remote>{repo}</remote>
-          <credentialsId></credentialsId>
-          <traits>
-            <jenkins.plugins.git.traits.BranchDiscoveryTrait/>
-          </traits>
-        </source>
-        <strategy class="jenkins.branch.DefaultBranchPropertyStrategy">
-          <properties class="empty-list"/>
-        </strategy>
-      </jenkins.branch.BranchSource>
-    </data>
-    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
-  </sources>
-  <factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory">
-    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
-    <scriptPath>{jenkinsfile}</scriptPath>
-  </factory>
-</org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>""".format(
-        repo=repo, jenkinsfile=jenkinsfile)
+</flow-definition>
+""".format(repo=repo, jenkinsfile=jenkinsfile)

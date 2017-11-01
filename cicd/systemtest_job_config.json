@@ -1,0 +1,5 @@
+{
+    "job1": ["repo1", "dir/to/Jenkinsfile"],
+    "job2": ["repo2", "another/dir/Jenkinsfile"],
+    "job3": ["repo3", "here/is/Jenkinsfile"]
+}
