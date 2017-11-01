@@ -1,23 +1,4 @@
-4. Create a job in Jenkins that reads from a Jenkinsfile
-  - From a configuration
-    - Nested if desired
-
-------- at least to here -----------
-
-5. Plugins:
-  - List them all... Short Name, Long Name, and a Description.
-  - Download plugins
-    - See https://gist.github.com/micw/e80d739c6099078ce0f3
-
-6. List status of Jenkins jobs
-  - Print status of each job
-    - Last successful
-    - Last job's status
-
-7. Gitlab to Jenkins integration
-  * Jenkinsfile to install, unit test, and system test
-  * Tie Gitlab push to Jenkins build
-
-8. System testing
-
-9. Email alerts
+1. Get job creation working well
+2. Get GitLab working, and add project for jenkinsutils
+3. Jenkins integration, checking in to jenkinsutils triggers job
+4. Powerpoint
